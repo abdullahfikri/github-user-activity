@@ -15,7 +15,7 @@ import java.util.List;
 public class EventRepositoryImpl implements EventRepository {
 
     @Override
-    public Event getEvents(String username) {
+    public List<Event> getEvents(String username) {
         try {
             HttpClient httpClient = HttpClient.newBuilder()
                     .version(HttpClient.Version.HTTP_2)
@@ -33,7 +33,6 @@ public class EventRepositoryImpl implements EventRepository {
 
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
 
             if (response.statusCode() == 404) {
                 throw new UserNotfoundException();
@@ -44,26 +43,28 @@ public class EventRepositoryImpl implements EventRepository {
                 return null;
             }
 
-            List<String> events = new ArrayList<>();
+            List<Event> events = new ArrayList<>();
 
             String[] eventsJson = responseBody.replace("[", "").replace("]", "").split("},\\{");
             for (String eventJson : eventsJson) {
                 if (!eventJson.endsWith("}") && !eventJson.startsWith("{")){
                     eventJson = "{" + eventJson + "}";
-                    events.add(eventJson);
+                    events.add(Event.fromJson(eventJson));
                 } else if (!eventJson.endsWith("}")) {
                     eventJson = eventJson + "}";
-                    events.add(eventJson);
+                    events.add(Event.fromJson(eventJson));
                 } else if (!eventJson.startsWith("{")) {
                     eventJson = "{" + eventJson;
-                    events.add(eventJson);
+                    events.add(Event.fromJson(eventJson));
                 } else  {
-                    events.add(eventJson);
+                    events.add(Event.fromJson(eventJson));
                 }
             }
 
             httpClient.close();
-            return Event.fromJson(events.getFirst());
+
+
+            return events;
         }  catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to catch the api " + e.getMessage());
         }

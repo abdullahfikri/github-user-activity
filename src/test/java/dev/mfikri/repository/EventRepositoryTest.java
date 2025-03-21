@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Year;
+import java.util.List;
 
 public class EventRepositoryTest {
     private EventRepository eventRepository;
@@ -18,15 +19,14 @@ public class EventRepositoryTest {
 
     @Test
     void testGetEventsSuccess() {
-        Event events = eventRepository.getEvents("abdullahfikri");
-
+        List<Event> events = eventRepository.getEvents("abdullahfikri");
         Assertions.assertNotNull(events);
     }
 
     @Test
     void testGetEventsNotFoundEvents() {
-        // test is doing for user who not use GitHub within 90days per 21 March 2025.
-        Event events = eventRepository.getEvents("lephuocloc1729");
+        // test is doing from user who not use GitHub within 90days per 21 March 2025.
+        List<Event> events = eventRepository.getEvents("lephuocloc1729");
         Assertions.assertNull(events);
     }
 
