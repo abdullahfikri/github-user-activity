@@ -18,6 +18,12 @@ public class EventServiceImpl implements EventService{
     public void getAllEvents(String username) {
         try {
             List<Event> events = eventRepository.getEvents(username);
+
+            if (events == null) {
+                System.out.println("User not have recent activity on github");
+                return;
+            }
+
             Map<String, List<Event>> eventsMap = new HashMap<>();
 
             events.forEach(event -> {
@@ -53,7 +59,6 @@ public class EventServiceImpl implements EventService{
                 }
 
             } );
-
 
 
         } catch (RuntimeException e) {
