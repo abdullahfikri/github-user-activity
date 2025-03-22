@@ -21,7 +21,6 @@ public class EventRepositoryTest {
     @Test
     void testGetEventsSuccess() {
         List<Event> events = eventRepository.getEvents("kamranahmedse");
-        System.out.println(events);
         Assertions.assertNotNull(events);
     }
 

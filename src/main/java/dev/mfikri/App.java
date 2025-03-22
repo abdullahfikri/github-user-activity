@@ -11,9 +11,6 @@ public class App {
         EventRepository eventRepository = new EventRepositoryImpl();
         EventService eventService = new EventServiceImpl(eventRepository);
         EventView eventView = new EventView(eventService);
-
         eventView.showEventCommand();
-
-
     }
 }
