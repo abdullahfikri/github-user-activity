@@ -3,6 +3,10 @@ package dev.mfikri.entity;
 public class Actor {
     private int id;
     private String login;
+    private String display_login;
+
+    public Actor() {
+    }
 
     public Actor(int id, String login) {
         this.id = id;
@@ -23,6 +27,14 @@ public class Actor {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getDisplay_login() {
+        return display_login;
+    }
+
+    public void setDisplay_login(String display_login) {
+        this.display_login = display_login;
     }
 
     @Override

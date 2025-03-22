@@ -4,6 +4,9 @@ public class Repo {
     private int id;
     private String name;
 
+    public Repo() {
+    }
+
     public Repo(int id, String name) {
         this.id = id;
         this.name = name;

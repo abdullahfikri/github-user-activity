@@ -1,7 +1,11 @@
 package dev.mfikri.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import dev.mfikri.entity.Event;
 import dev.mfikri.exception.UserNotfoundException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,10 +13,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventRepositoryImpl implements EventRepository {
+    ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
     @Override
     public List<Event> getEvents(String username) {
@@ -43,27 +47,10 @@ public class EventRepositoryImpl implements EventRepository {
                 return null;
             }
 
-            List<Event> events = new ArrayList<>();
-
-            String[] eventsJson = responseBody.replace("[", "").replace("]", "").split("},\\{");
-            for (String eventJson : eventsJson) {
-                if (!eventJson.endsWith("}") && !eventJson.startsWith("{")){
-                    eventJson = "{" + eventJson + "}";
-                    events.add(Event.fromJson(eventJson));
-                } else if (!eventJson.endsWith("}")) {
-                    eventJson = eventJson + "}";
-                    events.add(Event.fromJson(eventJson));
-                } else if (!eventJson.startsWith("{")) {
-                    eventJson = "{" + eventJson;
-                    events.add(Event.fromJson(eventJson));
-                } else  {
-                    events.add(Event.fromJson(eventJson));
-                }
-            }
+            List<Event> events = objectMapper.readValue(responseBody, new TypeReference<List<Event>>() {
+            });
 
             httpClient.close();
-
-
             return events;
         }  catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to catch the api " + e.getMessage());

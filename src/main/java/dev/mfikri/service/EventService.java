@@ -1,4 +1,5 @@
 package dev.mfikri.service;
 
-public class EventService {
+public interface EventService {
+    public void getAllEvents(String username);
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public class EventRepositoryTest {
     private EventRepository eventRepository;
 
+
     @BeforeEach
     void setUp() {
         eventRepository = new EventRepositoryImpl();
@@ -19,7 +20,8 @@ public class EventRepositoryTest {
 
     @Test
     void testGetEventsSuccess() {
-        List<Event> events = eventRepository.getEvents("abdullahfikri");
+        List<Event> events = eventRepository.getEvents("kamranahmedse");
+        System.out.println(events);
         Assertions.assertNotNull(events);
     }
 

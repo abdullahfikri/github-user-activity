@@ -11,6 +11,13 @@ public class Event {
     public Event() {
     }
 
+    public Event(String id, String type, Actor actor, Repo repo) {
+        this.id = id;
+        this.type = type;
+        this.actor = actor;
+        this.repo = repo;
+    }
+
     public String getId() {
         return id;
     }
@@ -51,26 +58,5 @@ public class Event {
                 ", actor=" + actor +
                 ", repo=" + repo +
                 '}';
-    }
-
-    public static Event fromJson(String json) {
-        json = json.replace("{", "").replace("}", "").replace("\"", "");
-
-        String[] arrayJson = json.split(",");
-
-        String id = arrayJson[0].split(":")[1].strip();
-        String type = arrayJson[1].split(":")[1].strip();
-        int actorId = Integer.parseInt(arrayJson[2].split("id:")[1].strip());
-        String actorLogin = arrayJson[3].split(":")[1].strip();
-        int repoId = Integer.parseInt(arrayJson[8].split("id:")[1].strip());
-        String repoName = arrayJson[9].split(":")[1].strip();
-
-        Event event = new Event();
-        event.setId(id);
-        event.setType(type);
-        event.setActor(new Actor(actorId, actorLogin));
-        event.setRepo(new Repo(repoId, repoName));
-
-        return event;
     }
 }
