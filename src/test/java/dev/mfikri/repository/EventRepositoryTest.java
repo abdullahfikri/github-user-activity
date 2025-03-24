@@ -2,20 +2,24 @@ package dev.mfikri.repository;
 
 import dev.mfikri.entity.Event;
 import dev.mfikri.exception.UserNotfoundException;
+import dev.mfikri.util.RedisConnectionUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisPooled;
 
 import java.time.Year;
 import java.util.List;
 
 public class EventRepositoryTest {
     private EventRepository eventRepository;
-
+    JedisPooled jedisPooled;
 
     @BeforeEach
     void setUp() {
-        eventRepository = new EventRepositoryImpl();
+        jedisPooled = RedisConnectionUtil.getJedis();
+        eventRepository = new EventRepositoryImpl(jedisPooled);
     }
 
     @Test

@@ -34,4 +34,3 @@ Project base on: **[GitHub User Activity
     # Close the programm
     exit
 ```
-
